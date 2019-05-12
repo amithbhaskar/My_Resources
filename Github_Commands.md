@@ -26,7 +26,7 @@ Last Updated on : 12 May 2019
 ### Pull files from an existing project
 ` $ git pull https://github.com/amithbhaskar/My_Resources
 > From https://github.com/amithbhaskar/My_Resources 
-> branch            HEAD       -> FETCH_HEAD
+> branch HEAD -> FETCH_HEAD
 
 - Git pull command pulls down from a remote and instantly merges
 - Git fetch is similar to pull but doesn't merge. i.e. it fetches remote updates (refs and objects) but your local stays the same (i.e. origin/master gets updated but master stays the same).
@@ -35,7 +35,7 @@ Last Updated on : 12 May 2019
 `$ git add README.md`
 
 ### Add Messages regarding the uploads and commit
-` $ git commit -m "first commit amith" '
+` $ git commit -m "first commit amith" `
 > [master (root-commit) 48b0796] first commit amith
 > 2 files changed, 2 insertions(+)
 > create mode 100644 README.md
@@ -50,7 +50,7 @@ Last Updated on : 12 May 2019
 > Writing objects: 100% (4/4), 267 bytes | 0 bytes/s, done.
 > Total 4 (delta 0), reused 0 (delta 0)
 > To https://github.com/amithbhaskar/My_Resources.git
->  * [new branch]      master -> master
+> [new branch] master -> master
 > Branch master set up to track remote branch master from origin.
 
 
