@@ -20,21 +20,25 @@ Last Updated on : 12 May 2019
 ### Most asked Queries :
 Second Highest Salary :
 Sub query along with Max() function as shown below:
-	```Select Max(Salary) from Employees
-	where Salary < ( Select Max(Salary) from Employees );```
+	```
+	Select Max(Salary) from Employees
+	where Salary < ( Select Max(Salary) from Employees );
+	```
 Nth highest salary using Sub-Query:
-	```SELECT TOP 1 SALARY
+	```
+	SELECT TOP 1 SALARY
 	FROM (
 		SELECT DISTINCT TOP N SALARY
 		FROM EMPLOYEES
 		ORDER BY SALARY DESC
 		) RESULT
-	ORDER BY SALARY ASC;```
+	ORDER BY SALARY ASC;
+	```
 
-##Union vs Union All
+## Union vs Union All
 Union all includes duplicates where as only Union doesnt.
 
-##Between Clause
+## Between Clause
 Between Clause is inclusive of starting and ending limits. 
 Using Greater & lesser than will be exclusive limits.
 
@@ -54,13 +58,13 @@ Using Greater & lesser than will be exclusive limits.
 	GO
 	// OUTPUT: EXEC CheckPassword '123456'; ```
 
-##Where condition faster than Join ?
+## Where condition faster than Join ?
 Theoretically, no, it shouldn't be any faster. The query optimizer should be able to generate an identical execution plan. However, some DB engines can produce better execution plans for one of them (for complex enough ones). You should test both and see (on your DB engine). 
 The JOIN-before-WHERE is logical processing not actual processing and the modern optimisers are clever enough to realise this. The problem most likely to be resolved by indexing the table.
 On certain situations where NULLs are involved - having a filtering condition at the ON or at the WHERE can make a big difference in such cases. This query execution order is how Microsoft SQL server will execute queries. Alternatively Sqlite first translates the join-syntax into the where-syntax before executing the query.
 To summarize, Where is faster compared to join but it depends on the DBs and its Query excecution order.
 
-##Merge Join
+## Merge Join
 ```
 MERGE <target_table> [AS TARGET]
 USING <table_source> [AS SOURCE]
@@ -81,7 +85,7 @@ MERGE INTO my_target_table tableE
 ```
 [Read in Detail](https://www.mssqltips.com/sqlservertip/1704/using-merge-in-sql-server-to-insert-update-and-delete-at-the-same-time/)
 
-##Window functions 
+## Window functions 
 Window functions operate on a set of rows and return a single value for each row from the underlying query. You can also include the optional PARTITION BY and ORDER BY clauses in a query. The PARTITION BY clause subdivides the window into partitions. The ORDER BY clause defines the logical order of the rows within each partition of the result set. Window functions are applied to the rows within each partition and sorted according to the order specification.
 A window function does not cause rows to become grouped into a single output row wheras The aggregate functions perform calculations across a set of rows and return a single output row.
 [Read in Detail](http://www.sqltutorial.org/sql-window-functions/)
@@ -124,7 +128,7 @@ and frame_end is one of the following options:
 	UNBOUNDED FOLLOWING			#The window frame ends with the last row of the partition, for both ROW and RANGE modes.
 	N FOLLOWING					
 
-##Constraints : 
+## Constraints : 
 Constraints are used to limit the type of data that can go into a table. This ensures the accuracy and reliability of the data in the table.
 - NOT NULL - Ensures that a column cannot have a NULL value
 - UNIQUE - Ensures that all values in a column are different
@@ -134,7 +138,7 @@ Constraints are used to limit the type of data that can go into a table. This en
 - DEFAULT - Sets a default value for a column when no value is specified
 - INDEX - Used to create and retrieve data from the database very quickly
 
-##Search Topics
+## Search Topics
 triggers, sequence, Sub query writing, MDX queries, Error Handling techniques
 temp & global tables 
 difference bw Delete & Truncate?
@@ -155,17 +159,14 @@ Control Flow - Analysis Services Processing Task, Rebuild Index Task, Reorganize
 Data Flow Tasks - pivot, unpivot, fuzzylookup, fuzzygrouping, SCD
 Incremental loading,Scheduling a job and Secure Packages
 On Error Event in Event Handler
-
-https://www.slideshare.net/sandip1004/ms-business-intelligence-with-sql-server-2005
-
-To Learn
 constraints, triggers, sequence, Sub query writing, MDX queries, Error Handling techniques
 difference bw Delete & Truncate?
 
-SSIS Assessments topics
+### SSIS Assessments topics
 Merge join, execute sql task, log audit - error description in event handlers, deprecated in sql 2014, is sorted,  pass table name between packages, flat file connections, xml file connection,
 
-##Links:
+## Links:
+https://www.slideshare.net/sandip1004/ms-business-intelligence-with-sql-server-2005
 SSIS
 https://www.databasejournal.com/features/mssql/article.php/3886556/Characteristics-and-Common-Usage-Scenarios-of-SSIS-Variables.htm
 https://docs.microsoft.com/en-us/sql/integration-services/integration-services-ssis-packages
