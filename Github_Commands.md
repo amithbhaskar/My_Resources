@@ -15,7 +15,7 @@ Last Updated on : 12 May 2019
 `$ git config --global user.email "amithbhaskar.312@gmail.com"`
 
 ### Check Username
-` $ git config --global user.name '
+` $ git config --global user.name `
 > Amith Bhaskar
 
 [Setting up a username in Git](https://help.github.com/en/articles/setting-your-username-in-git)
@@ -24,7 +24,7 @@ Last Updated on : 12 May 2019
 `$ git remote add origin https://github.com/amithbhaskar/My_Resources.git`
 
 ### Pull files from an existing project
-` $ git pull https://github.com/amithbhaskar/My_Resources
+` $ git pull https://github.com/amithbhaskar/My_Resources `
 > From https://github.com/amithbhaskar/My_Resources 
 > branch HEAD -> FETCH_HEAD
 
