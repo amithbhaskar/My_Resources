@@ -18,13 +18,13 @@ Last Updated on : 12 May 2019
 		CROSS JOIN StudentCourse;```
 
 ### Most asked Queries :
-Second Highest Salary :
-Sub query along with Max() function as shown below:
+- Second Highest Salary :
+  - Sub query along with Max() function as shown below:
 	```
 	Select Max(Salary) from Employees
 	where Salary < ( Select Max(Salary) from Employees );
 	```
-Nth highest salary using Sub-Query:
+- Nth highest salary using Sub-Query:
 	```
 	SELECT TOP 1 SALARY
 	FROM (
@@ -42,8 +42,9 @@ Union all includes duplicates where as only Union doesnt.
 Between Clause is inclusive of starting and ending limits. 
 Using Greater & lesser than will be exclusive limits.
 
-##Stored Procedures
-	```CREATE PROCEDURE CheckPassword
+## Stored Procedures
+	```
+	CREATE PROCEDURE CheckPassword
 	-- Add the parameters for the stored procedure here
 		@username VARCHAR(20),
 		@password varchar(20)
@@ -56,7 +57,8 @@ Using Greater & lesser than will be exclusive limits.
 		SELECT 'false' AS UserExists
 	END
 	GO
-	// OUTPUT: EXEC CheckPassword '123456'; ```
+	// OUTPUT: EXEC CheckPassword '123456'; 
+	```
 
 ## Where condition faster than Join ?
 Theoretically, no, it shouldn't be any faster. The query optimizer should be able to generate an identical execution plan. However, some DB engines can produce better execution plans for one of them (for complex enough ones). You should test both and see (on your DB engine). 
@@ -108,25 +110,27 @@ Types :
   - SUM()		  : SELECT dealer_id, emp_name, sales, SUM(sales) OVER(PARTITION BY dealer_id) AS `sum` FROM q1_sales;
   - MAX()		  : SELECT emp_name, dealer_id, sales, MAX(sales) OVER(PARTITION BY dealer_id) AS `max` FROM q1_sales;
   - MIN()		  : SELECT emp_name, dealer_id, sales, MIN(sales) OVER(PARTITION BY dealer_id) AS `min` FROM q1_sales;
+
 SYNTAX:
 > window_function_name ( expression ) OVER (				#target expression/column on which the window function operates (mandatory clause)
 >     					     partition_by_clause	#if not specified, then the whole result set is treated as a single partition
 >     					     order_by_clause [ASC | DESC]  [NULL {FIRST| LAST}]
 >     					     frame_clause 	)
+
 A frame is the subset of the current partition. The frame_clause supports the following frames:
-	RANGE UNBOUNDED PRECEDING
-	RANGE BETWEEN CURRENT ROW AND CURRENT ROW
-	[RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-	[RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+> RANGE UNBOUNDED PRECEDING
+> RANGE BETWEEN CURRENT ROW AND CURRENT ROW
+> [RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+> [RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
 To define the frame, you use one of the following syntaxes for window frame_start and frame_end :
 where frame_start is one of the following options:
-	N PRECEDING
-	UNBOUNDED PRECEDING			#The window frame starts with the first row of the partition.
-	CURRENT ROW					#CURRENT ROW means that the frame starts with the current row.
+> N PRECEDING
+> UNBOUNDED PRECEDING : The window frame starts with the first row of the partition.
+> CURRENT ROW : CURRENT ROW means that the frame starts with the current row.
 and frame_end is one of the following options:
-	CURRENT ROW					#CURRENT ROW means that the frame ends with the current row.
-	UNBOUNDED FOLLOWING			#The window frame ends with the last row of the partition, for both ROW and RANGE modes.
-	N FOLLOWING					
+> CURRENT ROW : CURRENT ROW means that the frame ends with the current row.
+> UNBOUNDED FOLLOWING : The window frame ends with the last row of the partition, for both ROW and RANGE modes.
+> N FOLLOWING					
 
 ## Constraints : 
 Constraints are used to limit the type of data that can go into a table. This ensures the accuracy and reliability of the data in the table.
