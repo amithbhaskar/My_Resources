@@ -23,9 +23,11 @@ Last Updated on : 14 June 2018
 ```$ git remote add origin https://github.com/amithbhaskar/My_Resources.git```
 
 ### Pull files from an existing project
-```$ git pull https://github.com/amithbhaskar/My_Resources
+```
+$ git pull https://github.com/amithbhaskar/My_Resources
 From https://github.com/amithbhaskar/My_Resources
- * branch            HEAD       -> FETCH_HEAD```
+ * branch            HEAD       -> FETCH_HEAD
+```
 
 git fetch is similar to pull but doesn't merge. i.e. it fetches remote updates (refs and objects) but your local stays the same (i.e. origin/master gets updated but master stays the same).
 git pull - pulls down from a remote and instantly merges
