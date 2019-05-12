@@ -1,5 +1,5 @@
 # SQL Server / SSIS
-
+Last Updated on : 12 May 2019
 
 ## Different types of joins in SQL
 - INNER JOIN : returns only those rows where there is a match in both tables.
