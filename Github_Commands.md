@@ -17,7 +17,7 @@ Last Updated on : 14 June 2018
 ### Check Username
 `$ git config --global user.name`
 `Amith Bhaskar`
-[Refer](https://help.github.com/en/articles/setting-your-username-in-git)
+[Setting up a username in Git](https://help.github.com/en/articles/setting-your-username-in-git)
 
 ### Set the Github Project as Remote Origin
 ```$ git remote add origin https://github.com/amithbhaskar/My_Resources.git```
@@ -36,7 +36,8 @@ git pull - pulls down from a remote and instantly merges
 `$ git add README.md`
 
 ### Add Messages regarding the uploads and commit
-```$ git commit -m "first commit amith"
+```
+$ git commit -m "first commit amith"
 [master (root-commit) 48b0796] first commit amith
  2 files changed, 2 insertions(+)
  create mode 100644 README.md
@@ -44,7 +45,8 @@ git pull - pulls down from a remote and instantly merges
 ```
 
 ### Upload the Files to the Github Project
-```$ git push -u origin master
+```
+$ git push -u origin master
 Counting objects: 4, done.
 Delta compression using up to 4 threads.
 Compressing objects: 100% (2/2), done.
@@ -65,4 +67,4 @@ Branch master set up to track remote branch master from origin.
 ```$ git push -u origin master```
 
 ## Formatting a Github md Page
-[Refer](https://help.github.com/en/articles/basic-writing-and-formatting-syntax#quoting-code)
+[Basic writing and formatting syntax](https://help.github.com/en/articles/basic-writing-and-formatting-syntax#quoting-code)
