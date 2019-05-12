@@ -1,6 +1,6 @@
 # Git Commands
 
-Last Updated on : 14 June 2018
+Last Updated on : 12 May 2019
 
 ## Most Used Commands
 
@@ -9,14 +9,16 @@ Last Updated on : 14 June 2018
 
 ### Setting your username in Git
 `$ git config --global user.name "Amith Bhaskar"`
-`Amith Bhaskar@DESKTOP-SO75LRP MINGW64 /c/Amith/Github/Cheatsheets (master)`
+`*Amith Bhaskar@DESKTOP-SO75LRP MINGW64 /c/Amith/Github/Cheatsheets (master)*`
 
 ### Setting your email in Git
 `$ git config --global user.email "amithbhaskar.312@gmail.com"`
 
 ### Check Username
-`$ git config --global user.name`
-`Amith Bhaskar`
+```
+$ git config --global user.name
+*Amith Bhaskar*
+```
 [Setting up a username in Git](https://help.github.com/en/articles/setting-your-username-in-git)
 
 ### Set the Github Project as Remote Origin
@@ -25,8 +27,8 @@ Last Updated on : 14 June 2018
 ### Pull files from an existing project
 ```
 $ git pull https://github.com/amithbhaskar/My_Resources
-From https://github.com/amithbhaskar/My_Resources
- * branch            HEAD       -> FETCH_HEAD
+* From https://github.com/amithbhaskar/My_Resources *
+*  * branch            HEAD       -> FETCH_HEAD*
 ```
 
 git fetch is similar to pull but doesn't merge. i.e. it fetches remote updates (refs and objects) but your local stays the same (i.e. origin/master gets updated but master stays the same).
