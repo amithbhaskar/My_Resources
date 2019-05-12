@@ -40,7 +40,8 @@ git pull - pulls down from a remote and instantly merges
 [master (root-commit) 48b0796] first commit amith
  2 files changed, 2 insertions(+)
  create mode 100644 README.md
- create mode 100644 asd.txt```
+ create mode 100644 asd.txt
+```
 
 ### Upload the Files to the Github Project
 ```$ git push -u origin master
@@ -51,7 +52,8 @@ Writing objects: 100% (4/4), 267 bytes | 0 bytes/s, done.
 Total 4 (delta 0), reused 0 (delta 0)
 To https://github.com/amithbhaskar/My_Resources.git
  * [new branch]      master -> master
-Branch master set up to track remote branch master from origin.```
+Branch master set up to track remote branch master from origin.
+```
 
 ### To add another file to the Project
 ```$ git add filename.fmrt```
