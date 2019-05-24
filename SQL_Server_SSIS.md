@@ -142,6 +142,13 @@ Constraints are used to limit the type of data that can go into a table. This en
 - DEFAULT - Sets a default value for a column when no value is specified
 - INDEX - Used to create and retrieve data from the database very quickly
 
+## Database Essentials
+IDENTITY is a property of a column in SQL Server which means that the column will be filled automatically with incrementing values. Due to the nature of this property, the values of this column are inherently UNIQUE
+No Nulls (replaced with blank for text or 0 for numeric during staging), as NULL values represent unknown data not no data.
+- NULL is not a value, and therefore has no intrinsic data type. Nulls need special handling all over the place when code that otherwise relies on actual types might also receive the un-typed NULL.
+- NULL breaks two-value (familiar True or False) logic, and requires a three-value logic. This is far more complex to even implement correctly, and is certainly poorly understood by most DBAs and just about all non-DBAs. As a consequence, it positively invites many subtle bugs in the application.
+
+
 ## Search Topics
 triggers, sequence, Sub query writing, MDX queries, Error Handling techniques
 temp & global tables 
