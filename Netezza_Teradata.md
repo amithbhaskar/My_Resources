@@ -1,4 +1,6 @@
 # NETEZZA
+Last Updated on : 24 May 2019
+
 Netezza is a powerful data warehouse appliance that can handle gigabyte volume of data and used widely is many medium and large scale organizations.
 Netezza’s primary product - TwinFin. In 2012 the products were re-branded as IBM PureData for Analytics. IT has a two tier system. The first tier is a high-performance Linux SMP host that compiles data query tasks received from business intelligence applications, and generates query execution plans. It then divides a query into a sequence of sub-tasks, or snippets that can be executed in parallel, and distributes the snippets to the second tier for execution.
 The second tier consists of one to hundreds of snippet processing blades, or S-Blades, where all the primary processing work of the appliance is executed. The S-Blades are intelligent processing nodes that make up the massively parallel processing (MPP) engine of the appliance. Each S-Blade is an independent server that contains multi-core Intel-based CPUs and Netezza’s proprietary multi-engine, high-throughput FPGAs. The S-Blade is composed of a standard blade-server combined with a special Netezza Database Accelerator card that snaps alongside the blade. Each S-Blade is, in turn, connected to multiple disk drives processing multiple data streams in parallel in TwinFin or Skimmer.
