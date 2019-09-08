@@ -8,6 +8,7 @@ Microsoft SQL Server is a relational database management system developed by Mic
 - [Limitations](#limitations)
 - [Architecture](#architecture)
 - [Datatypes](#datatypes)
+
 Basics SQL
 - [Types of Creating a Table](#types-&-variants-of-creating-a-table)
 - [DDLs - Data Definition Language](#ddls---data-definition-language)
@@ -31,19 +32,20 @@ Basics SQL
 - [Clustered and Non-Clustered Index](#clustered-and-non-clustered-index)
 - [Window functions ](#window-functions)
 - [Exception Handler](#exception-handler)
+
 Intermediate SQL : Conversions & Data Mockups
 - [Schema](#schema)
 - [Convert Queries](#convert-queries)
 - [Dateadd queries](#dateadd-queries)
 - [Financial Year](#financial-year)
-- [Generate Random String]#generate-random-string
+- [Generate Random String](#generate-random-string)
 - [Update by Row Number](#update-by-row-number)
 - [Update Random date](#update-random-date)
 - [Random number with normalized distribution:](#random-number-with-normalized-distribution)
 - [Split a string to a table using T-SQL ](#split-a-string-to-a-table-using-t-sql)
 - [STRING_SPLIT ( string , separator)](#string_split-(-string-,-separator))
 - [dbo.Split()](#dbo.split())
-- [Deduping Data : deduplication](#deduping-data-:-deduplication)
+- [Deduping Data](#deduping-data)
 - [Triggers](#triggers)
 - [Dynamic SQL](#dynamic-sql)
 - [Pagination](#pagination)
@@ -52,16 +54,19 @@ Intermediate SQL : Conversions & Data Mockups
 - [Data Dictionary](#data-dictionary)
 - [OPEN RowSET](#open-rowset)
 - [JSON data in SQL Server](#json-data-in-sql-server)
+
 Interview Questions
 - [Highest Salary Queries](#highest-salary-queries)
 - [Difference between TRUNCATE and DELETE in SQL](difference-between-truncate-and-delete-in-sql)
 - [Where condition faster than Join ?](#where-condition-faster-than-join-?)
 - [Interview Prep](#interview-prep)
+
 Azure Stuff
 - [Blob Storage](#blob-storage)
 - [Blob Lingo](#blob-lingo)
 - [Container Locations](#container-locations)
 - [Format Files for BLOB Storage](#format-files-for-blob-storage)
+
 Under Construction / Topics to Research
 - [Search Topics](#search-topics)
 - [Query Execution Plans](#query-execution-plans)
@@ -694,7 +699,7 @@ SET @DelimitedString = 'Duckman,Cornfed,Ajax,Charles,Mambo'
 SELECT ID,Data FROM dbo.Split(@DelimitedString, ',')
 ```
 
-## Deduping Data : Deduplication
+## Deduping Data
 Microsoft SQL Server tables should never contain duplicate rows, nor non-unique primary keys. Duplicate PKs are a violation of entity integrity, and should be disallowed in a relational system. SQL Server has various mechanisms for enforcing entity integrity, including indexes, UNIQUE constraints, PRIMARY KEY constraints, and triggers.
 For deduplicate / dedupe / remove duplication / remove repeated rows / To find duplicate records among large amounts of data, such as those found in databases managed with SQL Server, we use
 - distinct : The downside of this is that you need enough free data space in your database (or in tempdb) to store the entire table again, plus plenty of log space when you are de-duplicating large tables.
