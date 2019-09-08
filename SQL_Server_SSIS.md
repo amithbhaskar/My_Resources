@@ -120,7 +120,6 @@ Limitations: You cannot access local and global temporary tables in functions (U
 - Table Variable (@TableName)
 	- Create newTable as SELECT colnames FROM tableName;
 	- Select colnames INTO newTable from tablename;
-	- 
 
 ## DDLs - Data Definition Language
 CREATE – is used to create the database or its objects (like table, index, function, views, store procedure and triggers).
@@ -144,17 +143,18 @@ ALTER-is used to alter the structure of the database.
  ALTER TABLE tableName RENAME COLUMN colA to colB;
  ALTER TABLE tableName DROP COLUMN col2;
 ```
-TRUNCATE – is used to remove all records from a table, including all spaces allocated for the records are removed.
+TRUNCATE : is used to remove all records from a table, including all spaces allocated for the records are removed.
 ` TRUNCATE tableName;
-COMMENT – is used to add comments to the data dictionary.
-RENAME – is used to rename an object existing in the database.
+
+COMMENT : is used to add comments to the data dictionary.
+RENAME : is used to rename an object existing in the database.
 ` EXEC sp_RENAME 'TableName.OldColumnName' , 'NewColumnName', 'COLUMN'
 
 ## DMLs - Data Manipulation Language
-SELECT – is used to retrieve data from the a database.
-INSERT – is used to insert data into a table.
-UPDATE – is used to update existing data within a table.
-DELETE – is used to delete records from a database table.
+SELECT : is used to retrieve data from the a database.
+INSERT : is used to insert data into a table.
+UPDATE : is used to update existing data within a table.
+DELETE : is used to delete records from a database table.
 
 ## DCL - Data Control Language
 GRANT-gives user’s access privileges to database.
@@ -168,15 +168,15 @@ SET TRANSACTION–specify characteristics for the transaction.
 
 ## Constraints 
 Constraints are used to limit the type of data that can go into a table. This ensures the accuracy and reliability of the data in the table.
-- NOT NULL - Ensures that a column cannot have a NULL value
-- UNIQUE - Ensures that all values in a column are different
-- PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
-- FOREIGN KEY - Uniquely identifies a row/record in another table
-- CHECK - Ensures that all values in a column satisfies a specific condition
-- DEFAULT - Sets a default value for a column when no value is specified
-- INDEX - A database index is a data structure that provides quick lookup of data in a column or columns of a table. It enhances the speed of operations accessing data from a database table at the cost of additional writes and memory to maintain the index data structure.
- - Unique : ensures that no two rows of data in a table have identical key values. Once a unique index has been defined for a table, uniqueness is enforced whenever keys are added or changed within the index
- - Non-Unique Index : are used solely to improve query performance by maintaining a sorted order of data values that are used frequently. 
+- NOT NULL : Ensures that a column cannot have a NULL value
+- UNIQUE : Ensures that all values in a column are different
+- PRIMARY KEY : A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+- FOREIGN KEY : Uniquely identifies a row/record in another table
+- CHECK : Ensures that all values in a column satisfies a specific condition
+- DEFAULT : Sets a default value for a column when no value is specified
+- INDEX : A database index is a data structure that provides quick lookup of data in a column or columns of a table. It enhances the speed of operations accessing data from a database table at the cost of additional writes and memory to maintain the index data structure.
+  - Unique : ensures that no two rows of data in a table have identical key values. Once a unique index has been defined for a table, uniqueness is enforced whenever keys are added or changed within the index
+  - Non-Unique Index : are used solely to improve query performance by maintaining a sorted order of data values that are used frequently. 
  
 Scenario:
 ```
@@ -197,7 +197,6 @@ Add constraints first and then check
 ALTER TABLE [anx2].[tblGetIsdc]  WITH CHECK ADD  CONSTRAINT [tblGetIsdc_tblANX2RegisterInvoice_FK] FOREIGN KEY([A2RegisterInvoiceID])
 REFERENCES [anx2].[tblA2RegisterInvoice] ([ID])
 GO
-
 ALTER TABLE [anx2].[tblGetIsdc] CHECK CONSTRAINT [tblGetIsdc_tblANX2RegisterInvoice_FK]
 GO
 ```
