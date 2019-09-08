@@ -124,22 +124,26 @@ Limitations: You cannot access local and global temporary tables in functions (U
 
 ## DDLs - Data Definition Language
 CREATE – is used to create the database or its objects (like table, index, function, views, store procedure and triggers).
-`Create TABLE [dbo].[Employee]  (  
-`   [EmpID] 		[int] IDENTITY(1,1) NOT NULL,  
-`   [EmpName] 		[varchar](30) NULL,  
-`   [CreateName] 	[char] (10) NOT NULL,
-`	[CreateDTM] 	[DATETIME] NOT NULL,
-`	[UpdateDTM] 	[DATETIME] DEFAULT NULL,
-`	[UpdateName] 	[char](10) DEFAULT NULL,
-`	[EndDTM] 		[DATETIME] DEFAULT NULL)
+```
+Create TABLE [dbo].[Employee]  (  
+	[EmpID] 		[int] IDENTITY(1,1) NOT NULL,  
+	[EmpName] 		[varchar](30) NULL,  
+	[CreateName] 	[char] (10) NOT NULL,
+	[CreateDTM] 	[DATETIME] NOT NULL,
+	[UpdateDTM] 	[DATETIME] DEFAULT NULL,
+	[UpdateName] 	[char](10) DEFAULT NULL,
+	[EndDTM] 		[DATETIME] DEFAULT NULL			)
+```
 DROP – is used to delete objects from the database.
 ` DROP TABLE tableName;
 ALTER-is used to alter the structure of the database.
-` ALTER TABLE employees ADD last_name VARCHAR(50);
-` ALTER TABLE tableName MODIFY colName CHARACTER VARYING(20);
-` ALTER TABLE tableName RENAME TO newTableName;
-` ALTER TABLE tableName RENAME COLUMN colA to colB;
-` ALTER TABLE tableName DROP COLUMN col2;
+```
+ ALTER TABLE employees ADD last_name VARCHAR(50);
+ ALTER TABLE tableName MODIFY colName CHARACTER VARYING(20);
+ ALTER TABLE tableName RENAME TO newTableName;
+ ALTER TABLE tableName RENAME COLUMN colA to colB;
+ ALTER TABLE tableName DROP COLUMN col2;
+```
 TRUNCATE – is used to remove all records from a table, including all spaces allocated for the records are removed.
 ` TRUNCATE tableName;
 COMMENT – is used to add comments to the data dictionary.
