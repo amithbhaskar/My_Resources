@@ -439,24 +439,23 @@ A window function does not cause rows to become grouped into a single output row
 
 Types :
 - Value window functions
-  - FIRST_VALUE() : The FIRST_VALUE window function returns the value of the first row in the window frame.
-  - LAG()		  : The LAG() window function returns the value for the row before the current row in a partition. If no row exists, null is returned.
-  - LAST_VALUE()  : The LAST_VALUE window function returns the value of the last row in the window frame.
-  - LEAD()		  : The LEAD() window function returns the value for the row after the current row in a partition. If no row exists, null is returned.
+ - FIRST_VALUE() : The FIRST_VALUE window function returns the value of the first row in the window frame.
+ - LAG()		  : The LAG() window function returns the value for the row before the current row in a partition. If no row exists, null is returned.
+ - LAST_VALUE()  : The LAST_VALUE window function returns the value of the last row in the window frame.
+ - LEAD()		  : The LEAD() window function returns the value for the row after the current row in a partition. If no row exists, null is returned.
 - Ranking window functions
-  - NTILE()		  : divides the rows for each window partition, into a specified number of ranked groups based on the ORDER BY clause.
-  - RANK()		  : Rows with equal values recieve repeated rankings, next value will skip the next rank based on count and might not be consecutive numbers. Ex:1,2,2,4,5,6
-  - DENSE_RANK()  : Rows with equal values receive the same rank. There are no gaps in the sequence of ranked values if two or more rows have the same rank. Ex:1,2,2,3,4,5,6
-  - PERCENT_RANK(): The PERCENT_RANK () window function calculates the percent rank of the current row using the following formula: (x - 1) / (number of rows in window partition - 1) where x is the rank of the current row.
-  - ROW_NUMBER()  : The ordinal number of the current row within its partition determined by the ORDER BY clause. Rows with equal values receive different row numbers nondeterministically.
-  - CUME_DIST()   : The CUME_DIST() window function calculates the relative rank of the current row within a window partition: (number of rows preceding or peer with current row) / (total rows in the window partition)
+ - NTILE()		  : divides the rows for each window partition, into a specified number of ranked groups based on the ORDER BY clause.
+ - RANK()		  : Rows with equal values recieve repeated rankings, next value will skip the next rank based on count and might not be consecutive numbers. Ex:1,2,2,4,5,6
+ - DENSE_RANK()  : Rows with equal values receive the same rank. There are no gaps in the sequence of ranked values if two or more rows have the same rank. Ex:1,2,2,3,4,5,6
+ - PERCENT_RANK(): The PERCENT_RANK () window function calculates the percent rank of the current row using the following formula: (x - 1) / (number of rows in window partition - 1) where x is the rank of the current row.
+ - ROW_NUMBER()  : The ordinal number of the current row within its partition determined by the ORDER BY clause. Rows with equal values receive different row numbers nondeterministically.
+ - CUME_DIST()   : The CUME_DIST() window function calculates the relative rank of the current row within a window partition: (number of rows preceding or peer with current row) / (total rows in the window partition)
 - Aggregate window functions
-
-  - AVG()		  : SELECT dealer_id, sales, AVG(sales) OVER (PARTITION BY dealer_id) AS avgsales FROM q1_sales;
-  - COUNT()		  : SELECT dealer_id, sales, COUNT(sales) OVER(PARTITION BY dealer_id) AS `count` FROM q1_sales;
-  - SUM()		  : SELECT dealer_id, emp_name, sales, SUM(sales) OVER(PARTITION BY dealer_id) AS `sum` FROM q1_sales;
-  - MAX()		  : SELECT emp_name, dealer_id, sales, MAX(sales) OVER(PARTITION BY dealer_id) AS `max` FROM q1_sales;
-  - MIN()		  : SELECT emp_name, dealer_id, sales, MIN(sales) OVER(PARTITION BY dealer_id) AS `min` FROM q1_sales;
+ - AVG()		  : SELECT dealer_id, sales, AVG(sales) OVER (PARTITION BY dealer_id) AS avgsales FROM q1_sales;
+ - COUNT()		  : SELECT dealer_id, sales, COUNT(sales) OVER(PARTITION BY dealer_id) AS `count` FROM q1_sales;
+ - SUM()		  : SELECT dealer_id, emp_name, sales, SUM(sales) OVER(PARTITION BY dealer_id) AS `sum` FROM q1_sales;
+ - MAX()		  : SELECT emp_name, dealer_id, sales, MAX(sales) OVER(PARTITION BY dealer_id) AS `max` FROM q1_sales;
+ - MIN()		  : SELECT emp_name, dealer_id, sales, MIN(sales) OVER(PARTITION BY dealer_id) AS `min` FROM q1_sales;
 
 SYNTAX:
 ```	
