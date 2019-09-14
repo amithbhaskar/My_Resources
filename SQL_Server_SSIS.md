@@ -1,7 +1,7 @@
 # SQL Server / SSIS
 Last Updated on : 12 May 2019
 
-Microsoft SQL Server is a relational database management system developed by Microsoft. As a database server, it is a software product with the primary function of storing and retrieving data as requested by other software applications—which may run either on the same computer or on another computer across a network (including the Internet).
+Microsoft SQL Server is a relational database management system developed by Microsoft. As a database server, it is a software product with the primary function of storing and retrieving data as requested by other software applications, which may run either on the same computer or on another computer across a network (including the Internet).
 
 ## Contents
 [SQL Server Features](#sql-server-features)
@@ -11,10 +11,10 @@ Microsoft SQL Server is a relational database management system developed by Mic
 
 Basics SQL
 - [Types of Creating a Table](#types-&-variants-of-creating-a-table)
-- [DDLs - Data Definition Language](#ddls---data-definition-language)
-- [DMLs - Data Manipulation Language](#dmls---data-manipulation-language)
+- [DDL - Data Definition Language](#ddl---data-definition-language)
+- [DML - Data Manipulation Language](#dml---data-manipulation-language)
 - [DCL - Data Control Language](#dcl---data-control-language)
-- [TCL - Transaction Control Language)](#tcl---transaction-control-language)
+- [TCL - Transaction Control Language](#tcl---transaction-control-language)
 - [Constraints](#constraints)
 - [Foreign Key Constraints](#foreign-key-constraints)
 - [Data Dictionary](#data-dictionary)
@@ -83,18 +83,27 @@ Another interesting feature is JSON support which includes new features to handl
 
 ## Architecture
 Data storage is a database, which is a collection of tables with typed columns. SQL Server supports different data types, including primitive types such as Integer, Float, Decimal, Char (including character strings), Varchar (variable length character strings), binary (for unstructured blobs of data), Text (for textual data) among others. 
+
 Microsoft SQL Server also allows user-defined composite types (UDTs) to be defined and used. It also makes server statistics available as virtual tables and views (called Dynamic Management Views or DMVs). In addition to tables, a database can also contain other objects including views, stored procedures, indexes and constraints, along with a transaction log. 
+
 The data in the database are stored in primary data files with an extension .mdf. Secondary data files, identified with a .ndf extension, are used to allow the data of a single database to be spread across more than one file, and optionally across more than one file system. Log files are identified with the .ldf extension.
+
 Storage space allocated to a database is divided into sequentially numbered pages, each 8 KB in size. A page is the basic unit of I/O for SQL Server operations. A page is marked with a 96-byte header which stores metadata about the page including the page number, page type, free space on the page and the ID of the object that owns it. Page type defines the data contained in the page: data stored in the database, index, allocation map which holds information about how pages are allocated to tables and indexes, change map which holds information about the changes made to other pages since last backup or logging, or contain large data types such as image or text. While page is the basic unit of an I/O operation, space is actually managed in terms of an extent which consists of 8 pages. A database object can either span all 8 pages in an extent ("uniform extent") or share an extent with up to 7 more objects ("mixed extent").
+
 A row in a database table cannot span more than one page, so is limited to 8 KB in size. However, if the data exceeds 8 KB and the row contains varchar or varbinary data, the data in those columns are moved to a new page (or possibly a sequence of pages, called an allocation unit) and replaced with a pointer to the data.
+
 For physical storage of a table, its rows are divided into a series of partitions (numbered 1 to n). The partition size is user defined; by default all rows are in a single partition. A table is split into multiple partitions in order to spread a database over a computer cluster. Rows in each partition are stored in either B-tree or heap structure. If the table has an associated, clustered index to allow fast retrieval of rows, the rows are stored in-order according to their index values, with a B-tree providing the index. The data is in the leaf node of the leaves, and other nodes storing the index values for the leaf data reachable from the respective nodes. If the index is non-clustered, the rows are not sorted according to the index keys. An indexed view has the same storage structure as an indexed table. A table without a clustered index is stored in an unordered heap structure. However, the table may have non-clustered indices to allow fast retrieval of rows. In some situations the heap structure has performance advantages over the clustered structure. Both heaps and B-trees can span multiple allocation units.
+
 Buffer management : SQL Server buffers pages in RAM to minimize disk I/O. Any 8 KB page can be buffered in-memory, and the set of all pages currently buffered is called the buffer cache. The amount of memory available to SQL Server decides how many pages will be cached in memory. The buffer cache is managed by the Buffer Manager. Either reading from or writing to any page copies it to the buffer cache. Subsequent reads or writes are redirected to the in-memory copy, rather than the on-disc version. The page is updated on the disc by the Buffer Manager only if the in-memory cache has not been referenced for some time. While writing pages back to disc, asynchronous I/O is used whereby the I/O operation is done in a background thread so that other operations do not have to wait for the I/O operation to complete. Each page is written along with its checksum when it is written. When reading the page back, its checksum is computed again and matched with the stored version to ensure the page has not been damaged or tampered with in the meantime.
+
 Concurrency and locking: SQL Server allows multiple clients to use the same database concurrently. As such, it needs to control concurrent access to shared data, to ensure data integrity—when multiple clients update the same data, or clients attempt to read data that is in the process of being changed by another client. SQL Server provides two modes of concurrency control: pessimistic concurrency and optimistic concurrency. When pessimistic concurrency control is being used, SQL Server controls concurrent access by using locks. Locks can be either shared or exclusive. Exclusive lock grants the user exclusive access to the data—no other user can access the data as long as the lock is held. Shared locks are used when some data is being read—multiple users can read from data locked with a shared lock, but not acquire an exclusive lock. The latter would have to wait for all shared locks to be released.
 
 The main mode of retrieving data from a SQL Server database is querying for it. The query is expressed using a variant of SQL called T-SQL, a dialect Microsoft SQL Server 
 The query declaratively specifies what is to be retrieved. It is processed by the query processor, which figures out the sequence of steps that will be necessary to retrieve the requested data. The sequence of actions necessary to execute a query is called a query plan. There might be multiple ways to process the same query. For example, for a query that contains a join statement and a select statement, executing join on both the tables and then executing select on the results would give the same result as selecting from each table and then executing the join, but result in different execution plans. In such case, SQL Server chooses the plan that is expected to yield the results in the shortest possible time. This is called query optimization and is performed by the query processor itself.
+
 SQL Server includes a cost-based query optimizer which tries to optimize on the cost, in terms of the resources it will take to execute the query. Given a query, then the query optimizer looks at the database schema, the database statistics and the system load at that time. It then decides which sequence to access the tables referred in the query, which sequence to execute the operations and what access method to be used to access the tables. For example, if the table has an associated index, whether the index should be used or not: if the index is on a column which is not unique for most of the columns (low "selectivity"), it might not be worthwhile to use the index to access the data. Finally, it decides whether to execute the query concurrently or not.
 Once a query plan is generated for a query, it is temporarily cached. For further invocations of the same query, the cached plan is used. Unused plans are discarded after some time.
+
 SQL Server also allows stored procedures to be defined. Stored procedures are parameterized T-SQL queries, that are stored in the server itself (and not issued by the client application as is the case with general queries). Stored procedures can accept values sent by the client as input parameters, and send back results as output parameters. They can call defined functions, and other stored procedures, including the same stored procedure (up to a set number of times). They can be selectively provided access to. Unlike other queries, stored procedures have an associated name, which is used at runtime to resolve into the actual queries. Also because the code need not be sent from the client every time (as it can be accessed by name), it reduces network traffic and somewhat improves performance. Execution plans for stored procedures are also cached as necessary.
 
 ## Datatypes
@@ -107,47 +116,48 @@ The biggest concern is that nvarchar uses 2 bytes per character, whereas varchar
 ## Types of Creating a Table
 - User Tables (Regular Tables)
 - Local Temporary Tables (#TableName)
-  Stored in a tempdb under system databases.
-  Local temporary tables are visible only to their creators during the same connection to an instance of SQL Server as when the tables were first created or referenced.
-  If a local temporary table created in a stored procedure, it is dropped automatically when the stored procedure is finished.
-  You can create a Local Temporary Table with the same name but in a different connection, and it is stored with the same name along with various random values.
+  > Stored in a tempdb under system databases.
+  > Local temporary tables are visible only to their creators during the same connection to an instance of SQL Server as when the tables were first created or referenced.
+  > If a local temporary table created in a stored procedure, it is dropped automatically when the stored procedure is finished.
+  > You can create a Local Temporary Table with the same name but in a different connection, and it is stored with the same name along with various random values.
 - Global Temporary Tables (##TableName) 
-  Global temporary tables are visible to any user and any connection after they are created.
-  Global temporary table is automatically dropped when the session that created the table ends and the last active Transact-SQL statement (not session) referencing this table in other sessions ends.
+  > Global temporary tables are visible to any user and any connection after they are created.
+  > Global temporary table is automatically dropped when the session that created the table ends and the last active Transact-SQL statement (not session) referencing this table in other sessions ends.
+
 Limitations: You cannot access local and global temporary tables in functions (UDFs).
+
 - Tempdb permanent tables 
-   (USE tempdb CREATE TABLE t) are visible to everyone, and are deleted when the server is restarted.
+    > (USE tempdb CREATE TABLE t) are visible to everyone, and are deleted when the server is restarted.
 - Table Variable (@TableName)
-	- Create newTable as SELECT colnames FROM tableName;
-	- Select colnames INTO newTable from tablename;
+    - Create newTable as SELECT colnames FROM tableName;
+    - Select colnames INTO newTable from tablename;
 
 ## DDLs - Data Definition Language
 CREATE – is used to create the database or its objects (like table, index, function, views, store procedure and triggers).
 ```
 Create TABLE [dbo].[Employee]  (  
-	[EmpID] 		[int] IDENTITY(1,1) NOT NULL,  
-	[EmpName] 		[varchar](30) NULL,  
-	[CreateName] 	[char] (10) NOT NULL,
-	[CreateDTM] 	[DATETIME] NOT NULL,
-	[UpdateDTM] 	[DATETIME] DEFAULT NULL,
-	[UpdateName] 	[char](10) DEFAULT NULL,
-	[EndDTM] 		[DATETIME] DEFAULT NULL			)
+    [EmpID]      [int] IDENTITY(1,1) NOT NULL,  
+    [EmpName]    [varchar](30) NULL,  
+    [CreateName] [char] (10) NOT NULL,
+    [CreateDTM]  [DATETIME] NOT NULL,
+    [UpdateDTM]  [DATETIME] DEFAULT NULL,
+    [UpdateName] [char](10) DEFAULT NULL,
+    [EndDTM]     [DATETIME] DEFAULT NULL            )
 ```
 DROP – is used to delete objects from the database.
 ` DROP TABLE tableName;
 ALTER-is used to alter the structure of the database.
 ```
- ALTER TABLE employees ADD last_name VARCHAR(50);
- ALTER TABLE tableName MODIFY colName CHARACTER VARYING(20);
- ALTER TABLE tableName RENAME TO newTableName;
- ALTER TABLE tableName RENAME COLUMN colA to colB;
- ALTER TABLE tableName DROP COLUMN col2;
+ ALTER TABLE  tableName  ADD           colName VARCHAR(50);
+ ALTER TABLE  tableName  MODIFY        colName CHARACTER VARYING(20);
+ ALTER TABLE  tableName  RENAME COLUMN colA TO colB;
+ ALTER TABLE  tableName  DROP COLUMN   colName;
+ ALTER TABLE  tableName  RENAME TO     newTableName;
 ```
 TRUNCATE : is used to remove all records from a table, including all spaces allocated for the records are removed.
-` TRUNCATE tableName;
-
-COMMENT : is used to add comments to the data dictionary.
-RENAME : is used to rename an object existing in the database.
+`TRUNCATE tableName;
+COMMENT  : is used to add comments to the data dictionary.
+RENAME   : is used to rename an object existing in the database.
 ` EXEC sp_RENAME 'TableName.OldColumnName' , 'NewColumnName', 'COLUMN'
 
 ## DMLs - Data Manipulation Language
@@ -157,14 +167,14 @@ UPDATE : is used to update existing data within a table.
 DELETE : is used to delete records from a database table.
 
 ## DCL - Data Control Language
-GRANT-gives user’s access privileges to database.
-REVOKE-withdraw user’s access privileges given by using the GRANT command.
+GRANT  : gives user’s access privileges to database.
+REVOKE : withdraw user’s access privileges given by using the GRANT command.
 
 ## TCL - Transaction Control Language
-COMMIT– commits a Transaction.
-ROLLBACK– rollbacks a transaction in case of any error occurs.
-SAVEPOINT–sets a savepoint within a transaction.
-SET TRANSACTION–specify characteristics for the transaction.
+SET TRANSACTION : specify characteristics for the transaction.
+ROLLBACK        : rollbacks a transaction in case of any error occurs.
+COMMIT          : commits a Transaction.
+SAVEPOINT       : sets a savepoint within a transaction.
 
 ## Constraints 
 Constraints are used to limit the type of data that can go into a table. This ensures the accuracy and reliability of the data in the table.
@@ -194,10 +204,12 @@ Checks for key existing in parent table.
 ## Foreign Key Constraints
 Add constraints first and then check 
 ```
-ALTER TABLE [anx2].[tblGetIsdc]  WITH CHECK ADD  CONSTRAINT [tblGetIsdc_tblANX2RegisterInvoice_FK] FOREIGN KEY([A2RegisterInvoiceID])
-REFERENCES [anx2].[tblA2RegisterInvoice] ([ID])
+ALTER TABLE [schema].[childTable] 
+WITH CHECK ADD CONSTRAINT [childTable_FKcolName_FK] FOREIGN KEY(FKcolName)
+REFERENCES [schema].[ParenTable] (primaryKey)
 GO
-ALTER TABLE [anx2].[tblGetIsdc] CHECK CONSTRAINT [tblGetIsdc_tblANX2RegisterInvoice_FK]
+ALTER TABLE [schema].[ParenTable] 
+CHECK CONSTRAINT [childTable_FKcolName_FK]
 GO
 ```
 
@@ -208,81 +220,90 @@ GO
 - FULL JOIN  : returns rows when there is a match in one of the tables.
 - SELF JOIN  : is used to join a table to itself as if the table were two tables, temporarily renaming at least one table in the SQL statement. The self join can be viewed as a join of two copies of the same table. The table is not actually copied, but SQL performs the command as though it were.
   Ex: If we want a list of employees and the names of their supervisors, we’ll have to JOIN the EMPLOYEE table to itself to get this list.
-	```SELECT a.emp_id AS "Emp_ID",a.emp_name AS "Employee Name",
-		b.emp_id AS "Supervisor ID",b.emp_name AS "Supervisor Name"
-		FROM employee a, employee b
-		WHERE a.emp_supv = b.emp_id;```
+    ```
+    SELECT a.emp_id AS "Emp_ID",a.emp_name AS "Employee Name",
+    b.emp_id AS "Supervisor ID",b.emp_name AS "Supervisor Name"
+    FROM employee a, employee b
+    WHERE a.emp_supv = b.emp_id;
+    ```
 - CARTESIAN JOIN/CROSS JOIN : there is a join for each row of one table to every row of another table.
-		```SELECT Student.NAME, Student.AGE, StudentCourse.COURSE_ID
-		FROM Student
-		CROSS JOIN StudentCourse;```
+    ```
+    SELECT Student.NAME, Student.AGE, StudentCourse.COURSE_ID
+    FROM Student
+    CROSS JOIN StudentCourse;
+    ```
 
 ### Join duplications
 SQL joins will give you as many rows as specified in the join key condition.
 ```
-TableA	TableB
-ColA	ColB
-1		1
-1		1
-NULL	1
+TableA   TableB
+ColA      ColB
+  1         1
+  1         1
+ NULL       1
 (2 rows)(3 rows)
+
 SELECT * FROM TableA A
 INNER JOIN TableB B on A.ColA=B.ColB 
-ColA	ColB
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
+ColA    ColB
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
 (6 rows)
+
 SELECT * FROM TableA A
 LEFT JOIN TableB B on A.ColA=B.ColB 
-ColA	ColB
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
-NULL	NULL
+ColA    ColB
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
+NULL    NULL
 (7 rows)
+
 SELECT * FROM TableA A
 RIGHT JOIN TableB B on A.ColA=B.ColB 
-ColA	ColB
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
+ColA    ColB
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
 (6 rows)
+
 SELECT * FROM TableA A
 FULL JOIN TableB B on A.ColA=B.ColB 
-ColA	ColB
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
-1		1
-NULL	NULL
+ColA    ColB
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
+1       1
+NULL    NULL
 (7 rows)
+
 SELECT * FROM TableA CROSS JOIN TableB;
-colA	colB
-1		1
-1		1
-NULL	1
-1		1
-1		1
-NULL	1
-1		1
-1		1
-NULL	1
+colA    colB
+1       1
+1       1
+NULL    1
+1       1
+1       1
+NULL    1
+1       1
+1       1
+NULL    1
 (15 rows)
 ```
 
@@ -297,7 +318,8 @@ ON <search_condition>
 [WHEN NOT MATCHED [BY TARGET]
    THEN <merge_not_matched> ]
 [WHEN NOT MATCHED BY SOURCE
-   THEN <merge_matched> ];-------------------------------OR--
+   THEN <merge_matched> ];
+-------------------------------OR--
 MERGE INTO my_target_table tableE
       USING (SELECT * FROM ) tableS
   ON   tableE.UID   =  tableS.UID
@@ -369,14 +391,14 @@ SELECT FirstName, LastName
 FROM Contacts
 WHERE  
     FirstName = CASE
-					WHEN LEN(@FirstName) > 0 THEN  @FirstName 
-					ELSE FirstName 
-				END
+                    WHEN LEN(@FirstName) > 0 THEN  @FirstName 
+                    ELSE FirstName 
+                END
 AND
     LastName = CASE
-					WHEN LEN(@LastName) > 0 THEN  @LastName 
-					ELSE LastName 
-			   END
+                    WHEN LEN(@LastName) > 0 THEN  @LastName 
+                    ELSE LastName 
+               END
 GO
 ```
 
@@ -404,23 +426,23 @@ VALUES (NEXT VALUE FOR contacts_seq, 'Smith');
 
 ## Stored Procedures
 SP with IF ELSE blocks
-	
-	```
-	CREATE PROCEDURE CheckPassword
-	-- Add the parameters for the stored procedure here
-		@username VARCHAR(20),
-		@password varchar(20)
-	AS
-	BEGIN
-	SET NOCOUNT ON  -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
-	IF EXISTS(SELECT * FROM usertable WHERE username = @username AND password = @password)
-		SELECT 'true' AS UserExists
-	ELSE
-		SELECT 'false' AS UserExists
-	END
-	GO
-	// OUTPUT: EXEC CheckPassword '123456'; 
-	```
+    
+    ```
+    CREATE PROCEDURE CheckPassword
+    -- Add the parameters for the stored procedure here
+        @username VARCHAR(20),
+        @password varchar(20)
+    AS
+    BEGIN
+    SET NOCOUNT ON  -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.
+    IF EXISTS(SELECT * FROM usertable WHERE username = @username AND password = @password)
+        SELECT 'true' AS UserExists
+    ELSE
+        SELECT 'false' AS UserExists
+    END
+    GO
+    // OUTPUT: EXEC CheckPassword '123456'; 
+    ```
 
 ## Clustered and Non-Clustered Index
 
@@ -440,29 +462,29 @@ A window function does not cause rows to become grouped into a single output row
 Types :
 - Value window functions
  - FIRST_VALUE() : The FIRST_VALUE window function returns the value of the first row in the window frame.
- - LAG()		  : The LAG() window function returns the value for the row before the current row in a partition. If no row exists, null is returned.
+ - LAG()          : The LAG() window function returns the value for the row before the current row in a partition. If no row exists, null is returned.
  - LAST_VALUE()  : The LAST_VALUE window function returns the value of the last row in the window frame.
- - LEAD()		  : The LEAD() window function returns the value for the row after the current row in a partition. If no row exists, null is returned.
+ - LEAD()         : The LEAD() window function returns the value for the row after the current row in a partition. If no row exists, null is returned.
 - Ranking window functions
- - NTILE()		  : divides the rows for each window partition, into a specified number of ranked groups based on the ORDER BY clause.
- - RANK()		  : Rows with equal values recieve repeated rankings, next value will skip the next rank based on count and might not be consecutive numbers. Ex:1,2,2,4,5,6
+ - NTILE()        : divides the rows for each window partition, into a specified number of ranked groups based on the ORDER BY clause.
+ - RANK()         : Rows with equal values recieve repeated rankings, next value will skip the next rank based on count and might not be consecutive numbers. Ex:1,2,2,4,5,6
  - DENSE_RANK()  : Rows with equal values receive the same rank. There are no gaps in the sequence of ranked values if two or more rows have the same rank. Ex:1,2,2,3,4,5,6
  - PERCENT_RANK(): The PERCENT_RANK () window function calculates the percent rank of the current row using the following formula: (x - 1) / (number of rows in window partition - 1) where x is the rank of the current row.
  - ROW_NUMBER()  : The ordinal number of the current row within its partition determined by the ORDER BY clause. Rows with equal values receive different row numbers nondeterministically.
  - CUME_DIST()   : The CUME_DIST() window function calculates the relative rank of the current row within a window partition: (number of rows preceding or peer with current row) / (total rows in the window partition)
 - Aggregate window functions
- - AVG()		  : SELECT dealer_id, sales, AVG(sales) OVER (PARTITION BY dealer_id) AS avgsales FROM q1_sales;
- - COUNT()		  : SELECT dealer_id, sales, COUNT(sales) OVER(PARTITION BY dealer_id) AS `count` FROM q1_sales;
- - SUM()		  : SELECT dealer_id, emp_name, sales, SUM(sales) OVER(PARTITION BY dealer_id) AS `sum` FROM q1_sales;
- - MAX()		  : SELECT emp_name, dealer_id, sales, MAX(sales) OVER(PARTITION BY dealer_id) AS `max` FROM q1_sales;
- - MIN()		  : SELECT emp_name, dealer_id, sales, MIN(sales) OVER(PARTITION BY dealer_id) AS `min` FROM q1_sales;
+ - AVG()          : SELECT dealer_id, sales, AVG(sales) OVER (PARTITION BY dealer_id) AS avgsales FROM q1_sales;
+ - COUNT()        : SELECT dealer_id, sales, COUNT(sales) OVER(PARTITION BY dealer_id) AS `count` FROM q1_sales;
+ - SUM()          : SELECT dealer_id, emp_name, sales, SUM(sales) OVER(PARTITION BY dealer_id) AS `sum` FROM q1_sales;
+ - MAX()          : SELECT emp_name, dealer_id, sales, MAX(sales) OVER(PARTITION BY dealer_id) AS `max` FROM q1_sales;
+ - MIN()          : SELECT emp_name, dealer_id, sales, MIN(sales) OVER(PARTITION BY dealer_id) AS `min` FROM q1_sales;
 
 SYNTAX:
-```	
- window_function_name ( expression ) OVER (				#target expression/column on which the window function operates (mandatory clause)
-     					     partition_by_clause	#if not specified, then the whole result set is treated as a single partition
-     					     order_by_clause [ASC | DESC]  [NULL {FIRST| LAST}]
-     					     frame_clause 	)
+``` 
+ window_function_name ( expression ) OVER (             #target expression/column on which the window function operates (mandatory clause)
+                             partition_by_clause    #if not specified, then the whole result set is treated as a single partition
+                             order_by_clause [ASC | DESC]  [NULL {FIRST| LAST}]
+                             frame_clause   )
 ```
 A frame is the subset of the current partition. The frame_clause supports the following frames:
 - RANGE UNBOUNDED PRECEDING
@@ -477,72 +499,72 @@ where frame_start is one of the following options:
 and frame_end is one of the following options:
 - CURRENT ROW : CURRENT ROW means that the frame ends with the current row.
 - UNBOUNDED FOLLOWING : The window frame ends with the last row of the partition, for both ROW and RANGE modes.
-- N FOLLOWING					
+- N FOLLOWING                   
 
 ## Exception Handler
 SQL Server provides TRY, CATCH blocks for exception handling. We can put all T-SQL statements into a TRY BLOCK and the code for exception handling can be put into a CATCH block. We can also generate user-defined errors using a THROW block.
 SQL Server contains the following two types of exceptions:
 - System Defined: exceptions (errors) are generated by the system
 
-	```
-	Declare @val1 int;  
-	Declare @val2 int;  
-	BEGIN TRY  
-		Set @val1=8;  
-		Set @val2=@val1/0; /* Error Occurs Here */  
-	END TRY  
-	BEGIN CATCH  
-		Print 'Error Occur that is:'  
-		Print Error_Message()  
-	END CATCH  
-	```
+    ```
+    Declare @val1 int;  
+    Declare @val2 int;  
+    BEGIN TRY  
+        Set @val1=8;  
+        Set @val2=@val1/0; /* Error Occurs Here */  
+    END TRY  
+    BEGIN CATCH  
+        Print 'Error Occur that is:'  
+        Print Error_Message()  
+    END CATCH  
+    ```
 
-	The following keywords can be used within a catch block:
-	- @@ERROR
-	- ERROR_NUMBER()
-	- ERROR_STATE()
-	- ERROR_LINE()
-	- ERROR_MESSAGE()
-	- ERROR_PROCEDURE()
-	- ERROR_SEVERITY()
-	- RAISERROR()
-	- GOTO()
+    The following keywords can be used within a catch block:
+    - @@ERROR
+    - ERROR_NUMBER()
+    - ERROR_STATE()
+    - ERROR_LINE()
+    - ERROR_MESSAGE()
+    - ERROR_PROCEDURE()
+    - ERROR_SEVERITY()
+    - RAISERROR()
+    - GOTO()
 - User Defined: exception is user generated, not system generated.
-	```
-	Declare @val1 int;  
-	Declare @val2 int;  
-	BEGIN TRY  
-		Set @val1=8;  
-		Set @val2=@val1%2;   
-		if @val1=1  
-			Print 'No Error here'  
-		else  
-			Begin  
-				Print 'Error Occurs';  
-				Throw 60000,'Number Is Even',5  
-			End  
-	END TRY  
-	BEGIN CATCH  
-		Print 'Error Occur that is:'  
-		Print Error_Message()  
-	END CATCH  
-	```
+    ```
+    Declare @val1 int;  
+    Declare @val2 int;  
+    BEGIN TRY  
+        Set @val1=8;  
+        Set @val2=@val1%2;   
+        if @val1=1  
+            Print 'No Error here'  
+        else  
+            Begin  
+                Print 'Error Occurs';  
+                Throw 60000,'Number Is Even',5  
+            End  
+    END TRY  
+    BEGIN CATCH  
+        Print 'Error Occur that is:'  
+        Print Error_Message()  
+    END CATCH  
+    ```
 SP with try catch
 ```
-	CREATE PROCEDURE [dbo].[PL_GEN_PROVN_NO1]        
-		@GAD_COMP_CODE  VARCHAR(2) =NULL, 
-		@@voucher_no numeric =null output 
-		AS         
-	BEGIN  
-	
-		BEGIN TRY 
-			-- your proc code
-		END TRY
-	
-		BEGIN CATCH
-			-- what you want to do in catch
-		END CATCH    
-	END -- proc end
+    CREATE PROCEDURE [dbo].[PL_GEN_PROVN_NO1]        
+        @GAD_COMP_CODE  VARCHAR(2) =NULL, 
+        @@voucher_no numeric =null output 
+        AS         
+    BEGIN  
+    
+        BEGIN TRY 
+            -- your proc code
+        END TRY
+    
+        BEGIN CATCH
+            -- what you want to do in catch
+        END CATCH    
+    END -- proc end
 ```
 [Refer](https://stackoverflow.com/questions/1480881/how-to-add-a-try-catch-to-sql-stored-procedure)
 
@@ -591,9 +613,9 @@ SELECT DATEADD(YEAR,  –1, GETDATE()), 'Previous Year'
 Lesser or Equal to April month falls to previous FinYear, else next FinYear
 ```
 DECLARE @Year VARCHAR(20)  
-	SELECT @Year =(CASE WHEN (MONTH(GETDATE()))<= 3 THEN convert(varchar(4),YEAR(GETDATE())-1)+'-'+convert(varchar(4),YEAR(GETDATE())%100)  
-													ELSE convert(varchar(4),YEAR(GETDATE()))  +'-'+convert(varchar(4),(YEAR(GETDATE())%100)+1)
-				   END)  
+    SELECT @Year =(CASE WHEN (MONTH(GETDATE()))<= 3 THEN convert(varchar(4),YEAR(GETDATE())-1)+'-'+convert(varchar(4),YEAR(GETDATE())%100)  
+                                                    ELSE convert(varchar(4),YEAR(GETDATE()))  +'-'+convert(varchar(4),(YEAR(GETDATE())%100)+1)
+                   END)  
 SELECT @Year ASCurrentFinancialYear
 ```
 
@@ -602,12 +624,12 @@ SELECT @Year ASCurrentFinancialYear
 [Large Amount of Random Data](https://www.mssqltips.com/sqlservertip/5148/populate-large-tables-with-random-data-for-sql-server-performance-testing/)
 ```
 Declare @count int,
-		@CGSTIN VARCHAR(15),
-		@LowerLimitForNum int,
-		@UpperLimitForNum int
+        @CGSTIN VARCHAR(15),
+        @LowerLimitForNum int,
+        @UpperLimitForNum int
 Set @count = 1
-Set	@LowerLimitForNum = 1
-Set	@UpperLimitForNum = 100
+Set @LowerLimitForNum = 1
+Set @UpperLimitForNum = 100
 
 While @count <= 50000
 Begin 
@@ -625,7 +647,7 @@ End
 ## Update by Row Number
 ```
 SELECT ROW_NUMBER() OVER (ORDER BY [GSTfilingDate])
-	  ,[GSTINid]
+      ,[GSTINid]
       ,[StateName]
       ,[GSTfilingDate]
       ,[RetFiledDate]
@@ -636,7 +658,7 @@ UPDATE UpdateTarget
 SET GSTfilingDate='01-01-2017'
 FROM (
 SELECT ROW_NUMBER() OVER (ORDER BY [GSTfilingDate]) AS rOWnUM
-	  ,[GSTINid]
+      ,[GSTINid]
       ,[StateName]
       ,[GSTfilingDate]
       ,[RetFiledDate]
@@ -743,7 +765,7 @@ ON production.target_table
 AFTER INSERT, DELETE
 AS
 BEGIN
-	<sql statements>
+    <sql statements>
 END
 ```
 - INSTEAD OF trigger: is a trigger that allows you to skip an INSERT, DELETE, or UPDATE statement to a table or a view and execute other statements defined in the trigger instead. The actual insert, delete, or update operation does not occur at all.
@@ -755,7 +777,7 @@ INSTEAD OF INSERT
 AS
 BEGIN
 BEGIN
-	<sql statements>
+    <sql statements>
 END
 ```
 - DDL Trigger: respond to server or database events rather than to table data modifications. These events created by the Transact-SQL statement that normally starts with one of the following keywords CREATE, ALTER, DROP, GRANT, DENY, REVOKE, or UPDATE STATISTICS. They are used to :
@@ -809,14 +831,14 @@ DECLARE @ID BIGINT,
  SET @LIMITINT = CAST(@LIMIT AS INT)
  SET @OFFSET = (@PAGENO-1)*(@LIMITINT)
 
-		IF @OFFSET > 0
-		BEGIN
-			SET ROWCOUNT @OFFSET;
-			
-			SELECT @ID = A.ID  
-			FROM TableA A
-			INNER JOIN TableB B
-		END
+        IF @OFFSET > 0
+        BEGIN
+            SET ROWCOUNT @OFFSET;
+            
+            SELECT @ID = A.ID  
+            FROM TableA A
+            INNER JOIN TableB B
+        END
 
  SET @ID = ISNULL(@ID,0);
  SET ROWCOUNT @LIMITINT;
@@ -855,46 +877,46 @@ WHERE TABLE_NAME = 'Your Table Name'
 ORDER BY ORDINAL_POSITION
 
 select T.name as TableName,
-	   S.Name as SchemaName,
-	   C.name as ColumnName,
-	 --  Z.columnName as ColumnFullName,
-	   D.Name as DataType,
-	   H.CHARACTER_MAXIMUM_LENGTH as length,
-	 --  D.Max_Length,
-	   D.Precision,
-	   D.Scale,
-	   C.Is_identity,
-	   C.Is_Nullable,
-	   CAST(UPPER(REPLACE(REPLACE(object_definition(C.default_object_id),'(',''),')','')) AS NVARCHAR(255)) as DefaultValue,
-	   A.CONSTRAINT_NAME,
-	   A.CONSTRAINT_Type
+       S.Name as SchemaName,
+       C.name as ColumnName,
+     --  Z.columnName as ColumnFullName,
+       D.Name as DataType,
+       H.CHARACTER_MAXIMUM_LENGTH as length,
+     --  D.Max_Length,
+       D.Precision,
+       D.Scale,
+       C.Is_identity,
+       C.Is_Nullable,
+       CAST(UPPER(REPLACE(REPLACE(object_definition(C.default_object_id),'(',''),')','')) AS NVARCHAR(255)) as DefaultValue,
+       A.CONSTRAINT_NAME,
+       A.CONSTRAINT_Type
 
-	   FROM sys.tables T
-			INNER JOIN sys.Schemas S
-			ON T.schema_id=S.schema_id 
-			INNER JOIN sys.Columns C
-			ON T.object_id=C.object_id
-			INNER JOIN information_schema.columns H
-			on 
-			   H.TABLE_SCHEMA=S.name
-			and H.TABLE_NAME=T.name
-			and H.column_name=C.name
+       FROM sys.tables T
+            INNER JOIN sys.Schemas S
+            ON T.schema_id=S.schema_id 
+            INNER JOIN sys.Columns C
+            ON T.object_id=C.object_id
+            INNER JOIN information_schema.columns H
+            on 
+               H.TABLE_SCHEMA=S.name
+            and H.TABLE_NAME=T.name
+            and H.column_name=C.name
 
-			INNER JOIN sys.types D
-			ON C.user_type_id=D.user_type_id
-			LEFT JOIN (SELECT 
-							  A.TABLE_SCHEMA,A.TABLE_NAME,B.COLUMN_NAME,A.CONSTRAINT_TYPE, A.CONSTRAINT_NAME
-					   FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS A
-					   INNER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE B
-					   ON A.TABLE_CATALOG = B.TABLE_CATALOG
-					   AND A.TABLE_SCHEMA=B.TABLE_SCHEMA
-					   AND A.TABLE_NAME=B.TABLE_NAME
-					   AND A.CONSTRAINT_NAME=B.CONSTRAINT_NAME
-					   WHERE A.TABLE_NAME NOT LIKE 'sys%')  A
-			ON A.TABLE_SCHEMA=S.NAME
-			AND A.TABLE_NAME=T.NAME
-			AND A.COLUMN_NAME=C.NAME
-			--LEFT JOIN master.tblpurchasemetadata Z on Z.columnCode=C.Name
+            INNER JOIN sys.types D
+            ON C.user_type_id=D.user_type_id
+            LEFT JOIN (SELECT 
+                              A.TABLE_SCHEMA,A.TABLE_NAME,B.COLUMN_NAME,A.CONSTRAINT_TYPE, A.CONSTRAINT_NAME
+                       FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS A
+                       INNER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE B
+                       ON A.TABLE_CATALOG = B.TABLE_CATALOG
+                       AND A.TABLE_SCHEMA=B.TABLE_SCHEMA
+                       AND A.TABLE_NAME=B.TABLE_NAME
+                       AND A.CONSTRAINT_NAME=B.CONSTRAINT_NAME
+                       WHERE A.TABLE_NAME NOT LIKE 'sys%')  A
+            ON A.TABLE_SCHEMA=S.NAME
+            AND A.TABLE_NAME=T.NAME
+            AND A.COLUMN_NAME=C.NAME
+            --LEFT JOIN master.tblpurchasemetadata Z on Z.columnCode=C.Name
 where S.name in ('anx1','anx2','anx','stg')
 and T.name like '%tblGet%'
 
@@ -939,18 +961,18 @@ Convert JSON data to rows and columns by calling the OPENJSON rowset function, w
     
  INSERT INTO #JSON (ID,RequestID,MatchID,UserAction,Recordstatus)    
  SELECT ID AS ID,
-		REQUESTID AS REQUESTID,
-		MATCHID AS MATCHID,
-		USERACTION AS USERACTION,
-		0 AS Recordstatus
+        REQUESTID AS REQUESTID,
+        MATCHID AS MATCHID,
+        USERACTION AS USERACTION,
+        0 AS Recordstatus
  from openjson(@JSON)
  with (
-		id bigint,
-		requestID varchar(10),
-		matchID varchar(10),
-		userAction varchar(10),
-		Recordstatus int
-	)
+        id bigint,
+        requestID varchar(10),
+        matchID varchar(10),
+        userAction varchar(10),
+        Recordstatus int
+    )
 
 SELECT * FROM #JSON;
 ```
@@ -962,20 +984,20 @@ JSON_MODIFY (Transact-SQL) changes a value in a JSON string.
 ### Highest Salary Queries
 - Second Highest Salary :
   - Sub query along with Max() function as shown below:
-	```
-	Select Max(Salary) from Employees
-	where Salary < ( Select Max(Salary) from Employees );
-	```
+    ```
+    Select Max(Salary) from Employees
+    where Salary < ( Select Max(Salary) from Employees );
+    ```
 - Nth highest salary using Sub-Query:
-	```
-	SELECT TOP 1 SALARY
-	FROM (
-		SELECT DISTINCT TOP N SALARY
-		FROM EMPLOYEES
-		ORDER BY SALARY DESC
-		) RESULT
-	ORDER BY SALARY ASC;
-	```
+    ```
+    SELECT TOP 1 SALARY
+    FROM (
+        SELECT DISTINCT TOP N SALARY
+        FROM EMPLOYEES
+        ORDER BY SALARY DESC
+        ) RESULT
+    ORDER BY SALARY ASC;
+    ```
 ## Difference between TRUNCATE and DELETE in SQL
 ```
 +----------------------------------------  +----------------------------------------------+
@@ -983,10 +1005,10 @@ JSON_MODIFY (Transact-SQL) changes a value in a JSON string.
 +----------------------------------------  +----------------------------------------------+
 | We cannnot Rollback after performing     | We can Rollback after delete.                |
 | Truncate.                                |                                              |
-| Faster than Delete                       | Slower than Truncate						  |
+| Faster than Delete                       | Slower than Truncate                         |
 | TRUNCATE simply adjusts a pointer in the | DELETE must read the records, check constraints,  
-| DB for the table, & the data is gone,	   | update the block, update indexes, and generate 
-| it doesn't keep any logs.                | redo/undo. All of that takes time.			  |
+| DB for the table, & the data is gone,    | update the block, update indexes, and generate 
+| it doesn't keep any logs.                | redo/undo. All of that takes time.           |
 | Example:                                 | Example:                                     |
 | BEGIN TRAN                               | BEGIN TRAN                                   |
 | TRUNCATE TABLE tranTest                  | DELETE FROM tranTest                         |
@@ -1025,7 +1047,7 @@ To summarize, Where is faster compared to join but it depends on the DBs and its
 Blob is most like the data found in a traditional file-system but with a few key differences.  
 First, blob does not support nested directories.  Instead. data is partitioned in folders that go only one level deep. In blob parlance, these are called containers and the data objects within them are called blobs.  
 Second, blob data contains only limited automatic metadata.  
-	For example, there is only one timestamp on any give blob and it represents the time the blob was stored to the service.  Contrast that to a Windows NTFS file where you get 3 timesstamps – creation time, last access time and last write time.  Any additional metadata on a blob needs to be deliberately put there by the user. 
+    For example, there is only one timestamp on any give blob and it represents the time the blob was stored to the service.  Contrast that to a Windows NTFS file where you get 3 timesstamps – creation time, last access time and last write time.  Any additional metadata on a blob needs to be deliberately put there by the user. 
 Finally, a blob can be written in one of two formats:  
 - Block Blob : Block blobs are optimized for streaming and are relatively small in size. 
 - Page Blob : Page blobs are optimized for random access and can be very large, with a single blob consuming  up to 1TB.
@@ -1047,18 +1069,18 @@ SELECT * FROM sys.external_data_sources;
 To create format files to be placed in blob storage
 ```
 select ROW_NUMBER() over (order by Ordinal_position) as SlNo
-	, 'SQLCHAR' as SQLCHAR
-	, '0' as Zeros
-	, case DATA_TYPE
-		   when 'date'    then 11
-		   when 'decimal' then 41
-		   ELSE CHARACTER_MAXIMUM_LENGTH
-	  END
-	, '","' as FieldRowDelimiter
-	, ROW_NUMBER() over (order by Ordinal_position) as Ordinal_position
-	, COLUMN_NAME
-	,ISNULL(COLLATION_NAME,'""') as COLLATION_NAME
-	, DATA_TYPE --SELECT *
+    , 'SQLCHAR' as SQLCHAR
+    , '0' as Zeros
+    , case DATA_TYPE
+           when 'date'    then 11
+           when 'decimal' then 41
+           ELSE CHARACTER_MAXIMUM_LENGTH
+      END
+    , '","' as FieldRowDelimiter
+    , ROW_NUMBER() over (order by Ordinal_position) as Ordinal_position
+    , COLUMN_NAME
+    ,ISNULL(COLLATION_NAME,'""') as COLLATION_NAME
+    , DATA_TYPE --SELECT *
 from information_schema.columns
 WHERE TABLE_SCHEMA= 'ANX1'
 AND TABLE_NAME='tblGetDE'
